@@ -3,10 +3,17 @@ api_key=key
 
 
 [Backup]
-time=bk_time
+each=1d
 
 
 [Folders]
 source='folder1;folder2'
 dest='folder1;folder2'
 
+
+[Clean]
+older=4d
+
+
+[Database]
+name=db.db
