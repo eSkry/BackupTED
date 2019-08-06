@@ -1,0 +1,12 @@
+[GDrive]
+api_key=key
+
+
+[Backup]
+time=bk_time
+
+
+[Folders]
+source='folder1;folder2'
+dest='folder1;folder2'
+
