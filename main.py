@@ -1,3 +1,5 @@
+from datetime import datetime
+from datetime import timezone
 import configparser
 import sqlite3
 import os
@@ -20,6 +22,25 @@ destination_count = len(backup_destination)
 conn = db.CreateDB('initdb.sql')
 
 
+def NeedBackup(date):
+    days = int(str(conf['Backup']['each'])[:-1])
+    dist = date - datetime.now()
+
+    if dist.days >= days:
+        return True
+    
+    return False
+
 
 if __name__ == '__main__':
     print('BackupTED Started!')
+    
+    for source in backup_sources:
+        updtime = db.GetLastBackupTime(conn, source)
+        
+        if NeedBackup(updtime):
+            print('Start backup: [{}]'.format(source))
+            timestamp = dt.replace(tzinfo=timezone.utc).timestamp()
+            print(timestamp)
+            db.InsertNewBackupInfo(conn, timestamp, source, 'afa.zip')
+

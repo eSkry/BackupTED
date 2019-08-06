@@ -1,5 +1,5 @@
+from datetime import datetime
 import configparser
-import datetime
 import sqlite3
 import os
 
@@ -25,16 +25,16 @@ def CreateDB(sql_file):
     return conn
 
 
-def GetLastBackupTime(conn: sqlite3.Connection):
+def GetLastBackupTime(conn: sqlite3.Connection, _source):
     cur = conn.cursor()
-    result = cur.execute('SELECT *, max(date) FROM sync;')
+    result = cur.execute('SELECT *, max(date) FROM sync WHERE source=\'{}\';'.format(_source))
 
     if result.rowcount == 0:
-        return 0
+        return datetime.utcfromtimestamp(0)
     
-    return result.fetchone()[1]
+    return datetime.utcfromtimestamp( result.fetchone()[1] )
 
 
-def InsertNewBackupInfo(conn: sqlite3.Connection, _date, _source, _dest, _zip_name):
+def InsertNewBackupInfo(conn: sqlite3.Connection, _date, _source, _zip_name):
     cur = conn.cursor()
-    cur.execute('INSERT INTO sync (date, source, dest, zip_name) VALUES ({}, {}, {}, {})'.format(_date, _source, _dest, _zip_name))
+    cur.execute('INSERT INTO sync (date, source, zip_name) VALUES ({}, {}, {})'.format(_date, _source, _zip_name))
