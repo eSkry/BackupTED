@@ -2,8 +2,13 @@
 api_key=key
 
 
+[local]
+path=path_to_backup_folder
+
+
 [Backup]
 each=1d
+dest=GDrive;local
 
 
 [Folders]

@@ -18,3 +18,8 @@ destination_count = len(backup_destination)
 
 ## Sqlite3
 conn = db.CreateDB('initdb.sql')
+
+
+
+if __name__ == '__main__':
+    print('BackupTED Started!')
