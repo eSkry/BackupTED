@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timezone
 import configparser
 import sqlite3
+import time
 import os
 
 import folder_tools as ft
@@ -34,13 +35,13 @@ def NeedBackup(date):
 
 if __name__ == '__main__':
     print('BackupTED Started!')
-    
+
     for source in backup_sources:
         updtime = db.GetLastBackupTime(conn, source)
         
         if NeedBackup(updtime):
             print('Start backup: [{}]'.format(source))
-            timestamp = datetime.replace(tzinfo=timezone.utc).timestamp()
-            print(timestamp)
-            db.InsertNewBackupInfo(conn, timestamp, source, 'afa.zip')
+            timestamp = int(time.time())
+            file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d_%m_%Y_%H_%M_%S'))
+            db.InsertNewBackupInfo(conn, timestamp, source, '{}.zip'.format(file_time))
 
