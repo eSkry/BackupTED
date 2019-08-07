@@ -40,7 +40,7 @@ if __name__ == '__main__':
         
         if NeedBackup(updtime):
             print('Start backup: [{}]'.format(source))
-            timestamp = dt.replace(tzinfo=timezone.utc).timestamp()
+            timestamp = datetime.replace(tzinfo=timezone.utc).timestamp()
             print(timestamp)
             db.InsertNewBackupInfo(conn, timestamp, source, 'afa.zip')
 

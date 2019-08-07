@@ -13,10 +13,10 @@ def IsFolderExists(folder):
     return os.path.exists(folder) and os.path.isdir(folder)
 
 # Reading file to string and return his
-def ReadAllFile(file):
+def ReadAllFile(file: str):
     if IsFileExists(file):
         f = open(file, 'r')
-        data = f.read(file)
+        data = f.read()
         f.close()
         return data
     else:

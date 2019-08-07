@@ -11,7 +11,7 @@ config.read('./config/config.conf')
 DB_NAME = str(config['Database']['name'])
 
 # Возвращает соединение с базой данных
-def CreateDB(sql_file):
+def CreateDB(sql_file: str):
     if (ft.IsFileExists(DB_NAME)):
         return sqlite3.connect(DB_NAME)
 
@@ -19,8 +19,7 @@ def CreateDB(sql_file):
 
     if ft.IsFileExists(sql_file):
         sql = ft.ReadAllFile(sql_file)
-        cur = conn.cursor()
-        cur.execute(sql)
+        conn.executescript(sql)
 
     return conn
 
@@ -29,9 +28,9 @@ def GetLastBackupTime(conn: sqlite3.Connection, _source):
     cur = conn.cursor()
     result = cur.execute('SELECT *, max(date) FROM sync WHERE source=\'{}\';'.format(_source))
 
-    if result.rowcount == 0:
+    if result.rowcount == -1:
         return datetime.utcfromtimestamp(0)
-    
+
     return datetime.utcfromtimestamp( result.fetchone()[1] )
 
 
