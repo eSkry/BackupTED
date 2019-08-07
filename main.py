@@ -3,7 +3,6 @@ from datetime import timezone
 import configparser
 import sqlite3
 import zipfile
-import time
 import os
 
 import folder_tools as ft
@@ -23,23 +22,13 @@ temp_zip_dir = str(conf['Backup']['temp_dir']).replace("'", '')
 conn = db.CreateDB('initdb.sql')
 
 
-def NeedBackup(date):
-    days = int(str(conf['Backup']['each'])[:-1])
-    dist = datetime.now() - date
-
-    if dist.days >= days:
-        return True
-        
-    return False
-
-
 if __name__ == '__main__':
     print('BackupTED Started!')
 
     for source in backup_sources:
-        if NeedBackup( db.GetLastBackupTime(conn, source) ):
+        if bct.NeedBackup( db.GetLastBackupTime(conn, source) ):
             print('Start backup: [{}]'.format(source))
-            timestamp = int(time.time())
+            timestamp = bct.GetUnixTimestamp()
             file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d_%m_%Y_%H_%M_%S'))
             zip_filename = '{}.zip'.format(file_time)
             zip_temp_path = temp_zip_dir + '/' + zip_filename
