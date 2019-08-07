@@ -1,0 +1,10 @@
+[Unit]
+Description=Deamon for BackupTED
+After=network.target
+
+[Service]
+User=script_runner_user
+ExecStart=/path/to/script.py --option
+
+[Install]
+WantedBy=multi-user.target
