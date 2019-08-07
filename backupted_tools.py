@@ -2,7 +2,6 @@ from datetime import datetime
 from datetime import timezone
 import configparser
 import zipfile
-import time
 import os
 
 import folder_tools as ft
@@ -14,7 +13,7 @@ conf.read("./config/config.conf")
 
 
 def GetUnixTimestamp():
-    return int(time.time())
+    return datetime.now().timestamp()
 
 
 # Принимает на вход пассив папок для синхронизации.
@@ -45,7 +44,7 @@ def zipdir(path, zip_name, password):
 
 def NeedBackup(date):
     days = int(str(conf['Backup']['each'])[:-1])
-    dist = datetime.utcfromtimestamp(GetUnixTimestamp()) - date
+    dist = datetime.fromtimestamp(GetUnixTimestamp()) - datetime.fromtimestamp(date)
 
     if dist.days >= days:
         return True

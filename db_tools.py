@@ -27,13 +27,15 @@ def CreateDB(sql_file: str):
 def GetLastBackupTime(conn: sqlite3.Connection, _source):
     cur = conn.cursor()
     result = cur.execute('SELECT *, max(date) FROM sync WHERE source=\'{}\';'.format(_source))
+    vals = result.fetchone()
 
-    if result.rowcount == -1:
-        return datetime.utcfromtimestamp(0)
+    if vals[1] == None:
+        return 0
 
-    return datetime.utcfromtimestamp( result.fetchone()[1] )
+    return vals[1] # Column date from table sync
 
 
 def InsertNewBackupInfo(conn: sqlite3.Connection, _date, _source, _zip_name):
     cur = conn.cursor()
     cur.execute('INSERT INTO sync (date, source, zip_name) VALUES ({}, \'{}\', \'{}\')'.format(_date, _source, _zip_name))
+    conn.commit()
