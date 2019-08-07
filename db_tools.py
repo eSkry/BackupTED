@@ -13,7 +13,7 @@ DB_NAME = str(config['Database']['name'])
 # Возвращает соединение с базой данных
 def CreateDB(sql_file: str):
     if (ft.IsFileExists(DB_NAME)):
-        return sqlite3.connect(DB_NAME)
+        return sqlite3.connect(DB_NAME, isolation_level=None)
 
     conn = sqlite3.connect(DB_NAME)
 
