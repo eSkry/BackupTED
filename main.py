@@ -25,7 +25,7 @@ conn = db.CreateDB('initdb.sql')
 
 def NeedBackup(date):
     days = int(str(conf['Backup']['each'])[:-1])
-    dist = date - datetime.now()
+    dist = datetime.now() - date
 
     if dist.days >= days:
         return True
