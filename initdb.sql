@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `sync` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`date`	NUMERIC,
 	`source`	TEXT,
-	`zip_name`	TEXT
+	`zip_name`	TEXT,
+	`zip_pass_salt`  TEXT
 );
 COMMIT;
