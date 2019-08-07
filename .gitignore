@@ -1,3 +1,4 @@
 config/config.conf
 __pycache__
 db.db
+*.zip
