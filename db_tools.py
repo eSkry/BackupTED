@@ -36,4 +36,4 @@ def GetLastBackupTime(conn: sqlite3.Connection, _source):
 
 def InsertNewBackupInfo(conn: sqlite3.Connection, _date, _source, _zip_name):
     cur = conn.cursor()
-    cur.execute('INSERT INTO sync (date, source, zip_name) VALUES ({}, {}, {})'.format(_date, _source, _zip_name))
+    cur.execute('INSERT INTO sync (date, source, zip_name) VALUES ({}, \'{}\', \'{}\')'.format(_date, _source, _zip_name))
