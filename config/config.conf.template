@@ -8,9 +8,9 @@ path=path_to_backup_folder
 
 [Backup]
 each=1d
-dest=GDrive;local
+dest='GDrive;local'
 zip_pass=pass
-
+temp_dir='./'
 
 [Folders]
 source='folder1;folder2'
