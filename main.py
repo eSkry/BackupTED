@@ -22,9 +22,7 @@ temp_zip_dir = str(conf['Backup']['temp_dir']).replace("'", '')
 conn = db.CreateDB('initdb.sql')
 
 
-if __name__ == '__main__':
-    print('BackupTED Started!')
-
+def CreateBackups():
     for source in backup_sources:
         if bct.NeedBackup( db.GetLastBackupTime(conn, source) ):
             print('Start backup: [{}]'.format(source))
@@ -35,4 +33,9 @@ if __name__ == '__main__':
 
             bct.zipdir(source, zip_temp_path, b'12345')
             db.InsertNewBackupInfo(conn, timestamp, source, zip_filename)
+
+
+if __name__ == '__main__':
+    print('BackupTED Started!')
+    CreateBackups()
 

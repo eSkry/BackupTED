@@ -11,7 +11,7 @@ conf = configparser.ConfigParser()
 conf.read("./config/config.conf")
 
 
-
+# Возвращает unix timestamp -> float
 def GetUnixTimestamp():
     return datetime.now().timestamp()
 
@@ -36,10 +36,11 @@ def MakeDestinationFolders(config_destination):
 
 def zipdir(path, zip_name, password):
     ziph = zipfile.ZipFile(zip_name, 'w')
-    ziph.setpassword(password)
     for root, dirs, files in os.walk(path):
         for file in files:
             ziph.write(os.path.join(root, file))
+    
+    ziph.setpassword(password)
 
 
 def NeedBackup(date):
