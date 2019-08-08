@@ -1,20 +1,18 @@
 [GDrive]
 api_key=key
+path='path_to_backup_folder'
 
 
 [local]
-path=path_to_backup_folder
+path='path_to_backup_folder'
 
 
 [Backup]
+source='folder1;folder2'
 each=1d
 dest='GDrive;local'
 zip_pass=pass
 temp_dir='./'
-
-[Folders]
-source='folder1;folder2'
-dest='folder1;folder2'
 
 
 [Clean]
