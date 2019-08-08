@@ -42,7 +42,6 @@ def zipdir(path, zip_name, password):
     
     ziph.setpassword(password)
 
-
 def NeedBackup(date):
     days = int(str(conf['Backup']['each'])[:-1])
     dist = datetime.fromtimestamp(GetUnixTimestamp()) - datetime.fromtimestamp(date)
@@ -51,3 +50,18 @@ def NeedBackup(date):
         return True
         
     return False
+
+
+def BackupToLocalExists():
+    dests = str(conf['Backup']['dest']).replace("'", '').split(';')
+    for dest in dests:
+        if dest == 'local':
+            return True
+    
+    return False
+
+def GetTempSaveFolder():
+    if BackupToLocalExists():
+        return str(conf['local']['path']).replace("'", '')
+
+    return str(conf['Backup']['temp_dir']).replace("'", '')

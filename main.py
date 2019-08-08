@@ -15,7 +15,7 @@ conf.read("./config/config.conf")
 
 ## Variables
 backup_sources = bct.GetAvaibleSyncSourceFolders(str(conf['Backup']['source']).replace("'", '').split(';'))
-temp_zip_dir = str(conf['Backup']['temp_dir']).replace("'", '')
+temp_zip_dir = bct.GetTempSaveFolder()
 backup_dest = str(conf['Backup']['dest']).replace("'", '').split(';')
 
 ## Sqlite3
@@ -24,6 +24,7 @@ conn = db.CreateDB('initdb.sql')
 
 def CreateBackups():
     zip_files = []
+    ft.MakeDirs(temp_zip_dir)
 
     for source in backup_sources:
         if bct.NeedBackup( db.GetLastBackupTime(conn, source) ):
@@ -39,11 +40,19 @@ def CreateBackups():
 
     for dest in backup_dest:
         if dest == 'local':
+            if bct.BackupToLocalExists():
+                continue
+
             dest_path = os.path.join(temp_zip_dir, str(conf['local']['path']).replace("'", ''))
             ft.CopyFiles(zip_files, dest_path)
+        if dest == 'GDrive':
+            pass
 
 
 def ClearTempDir():
+    if bct.BackupToLocalExists():
+        return
+
     files = os.listdir(temp_zip_dir)
     for item in files:
         if item.endswith('.zip'):

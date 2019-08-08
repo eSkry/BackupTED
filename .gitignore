@@ -1,4 +1,5 @@
 config/config.conf
 __pycache__
 db.db
+backupted.db
 *.zip

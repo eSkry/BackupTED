@@ -24,6 +24,10 @@ def ReadAllFile(file: str):
     else:
         return ''
 
+def MakeDirs(path):
+    if IsFolderAvailable(path):
+        return
+    os.makedirs(path)
 
 def CopyFile(source, destination):
     if not IsFolderExists(destination):
