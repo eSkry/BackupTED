@@ -1,3 +1,5 @@
+from shutil import copyfile
+import shutil
 import os
 
 # Return true if file have read acces
@@ -21,3 +23,15 @@ def ReadAllFile(file: str):
         return data
     else:
         return ''
+
+
+def CopyFile(source, destination):
+    if not IsFolderExists(destination):
+        os.makedirs(destination)
+    
+    shutil.copy2(source, destination)
+
+
+def CopyFiles(sources, destination):
+    for source in sources:
+        CopyFile(source, destination)
