@@ -14,7 +14,7 @@ conf = configparser.ConfigParser()
 conf.read("./config/config.conf")
 
 ## Variables
-backup_sources = bct.GetAvaibleSyncSourceFolders(str(conf['Backup']['source']).replace("'", '').split(';'))
+backup_sources = bct.GetAvaibleSyncSourceFolders( bct.GetSourcePairs() )
 temp_zip_dir = bct.GetTempSaveFolder()
 backup_dest = str(conf['Backup']['dest']).replace("'", '').split(';')
 
@@ -26,16 +26,18 @@ def CreateBackups():
     zip_files = []
     ft.MakeDirs(temp_zip_dir)
 
-    for source in backup_sources:
-        if bct.NeedBackup( db.GetLastBackupTime(conn, source) ):
-            print('Start backup: [{}]'.format(source))
+    for key in backup_sources.keys():
+        copy_source = backup_sources[key]
+
+        if bct.NeedBackup( db.GetLastBackupTime(conn, copy_source) ):
+            print('Start backup: [{}]'.format(copy_source))
             timestamp = bct.GetUnixTimestamp()
             file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d_%m_%Y_%H_%M_%S'))
-            zip_filename = '{}.zip'.format(file_time)
+            zip_filename = '{}_{}.zip'.format(key, file_time)
             zip_temp_path = os.path.join(temp_zip_dir, zip_filename)
 
-            bct.zipdir(source, zip_temp_path, b'12345')
-            db.InsertNewBackupInfo(conn, timestamp, source, zip_filename)
+            bct.zipdir(copy_source, zip_temp_path, b'12345')
+            db.InsertNewBackupInfo(conn, timestamp, copy_source, zip_filename)
             zip_files.append(zip_temp_path)
 
     for dest in backup_dest:

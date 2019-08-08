@@ -8,7 +8,7 @@ path='path_to_backup_folder'
 
 
 [Backup]
-source='folder1;folder2'
+source='lable1@folder1;label2@folder2'
 each=1d
 dest='GDrive;local'
 zip_pass=pass
@@ -16,7 +16,7 @@ temp_dir='./'
 
 
 [Clean]
-older=4d
+older=7d
 
 
 [Database]
