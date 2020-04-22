@@ -1,6 +1,7 @@
 from shutil import copyfile
 import shutil
 import os
+import re
 
 # Return true if file have read acces
 def IsFolderAvailable(folder):
@@ -39,3 +40,13 @@ def CopyFile(source, destination):
 def CopyFiles(sources, destination):
     for source in sources:
         CopyFile(source, destination)
+
+def GetBackupsList(backup_folder):
+    files = os.listdir(backup_folder)
+    backups = []
+    for f in files:
+        if f.endswith('bted'):
+            backups.append(f)
+
+    return backups
+            

@@ -8,6 +8,7 @@ import os
 import folder_tools as ft
 import db_tools as db
 import backupted_tools as bct
+import folders_sync as fsync
 
 ## Config
 conf = configparser.ConfigParser()
@@ -32,24 +33,19 @@ def CreateBackups():
         if bct.NeedBackup( db.GetLastBackupTime(conn, copy_source) ):
             print(f'Start backup: [{copy_source}]')
             timestamp = bct.GetUnixTimestamp()
-            file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d_%m_%Y_%H_%M_%S'))
-            zip_filename = f'{key}_{file_time}.zip'
+            file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d-%m-%Y_%H-%M-%S'))
+            zip_filename = f'{key}_{file_time}.bted'
             zip_temp_path = os.path.join(temp_zip_dir, zip_filename)
             bct.zipdir(copy_source, zip_temp_path, b'12345')
             db.InsertNewBackupInfo(conn, timestamp, copy_source, zip_filename)
             zip_files.append(zip_temp_path)
 
     for dest in backup_dest:
-        if dest == 'local':
-            if bct.BackupToLocalExists():
-                continue
-            
+        if dest == 'local':            
             dest_folders = bct.GetLocalDestinationFolders()
             for dest_f in dest_folders:
                 ft.CopyFiles(zip_files, dest_f)
                 
-            #dest_path = os.path.join(temp_zip_dir, str(conf['local']['path']).replace("'", ''))
-            #ft.CopyFiles(zip_files, dest_path)
         if dest == 'GDrive':
             pass
 
@@ -68,4 +64,4 @@ if __name__ == '__main__':
     print('BackupTED Started!')
     CreateBackups()
     ClearTempDir()
-
+    fsync.SartSyncFolders()

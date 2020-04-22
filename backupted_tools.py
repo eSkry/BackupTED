@@ -89,7 +89,7 @@ def GetSourcePairs():
     return pairs
 
 def GetLocalDestinationFolders():
-    return str(conf['local']['path']).split(';')
+    return str(conf['local']['path']).replace("'", '').split(';')
 
 def GetIgnoreFileTypes():
     return str(conf['ignore']['types']).split(';')
