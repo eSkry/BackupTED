@@ -60,8 +60,10 @@ def ClearTempDir():
             os.remove(os.path.join(temp_zip_dir, item))
 
 
+
 if __name__ == '__main__':
     print('BackupTED Started!')
     CreateBackups()
     ClearTempDir()
-    fsync.SartSyncFolders()
+    fsync.SyncFolders()
+    fsync.ClearOldBackups()

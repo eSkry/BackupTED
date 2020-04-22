@@ -99,7 +99,20 @@ def IsFileIgnore(fileName):
         if fileName.endswith(fileType):
             return True
     
-    if fileName.startswith('~'):
+    if fileName.startswith('~'): # Игнорировать файлы блокировки (Windows)
         return True
 
     return False
+
+def GetCleanDays():
+    mark = str(conf['Clean']['older'])
+
+    if mark[-1] == 'd':
+        return int(mark[:-1])
+    if mark[-1] == 'w':
+        return int(mark[:-1]) * 7
+    if mark[-1] == 'm':
+        return int(mark[:-1]) * 28
+    
+    return 0
+    

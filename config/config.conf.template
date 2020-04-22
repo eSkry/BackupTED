@@ -14,7 +14,7 @@ dest='GDrive;local'
 zip_pass=pass
 temp_dir='./'
 
-
+# d - days, w - weak, m - month
 [Clean]
 older=7d
 
@@ -23,5 +23,5 @@ older=7d
 name=db.db
 
 [ignore]
-types='exe;bin;jpg;png;'
+types='bted;exe;bin;jpg;png'
 size=10
