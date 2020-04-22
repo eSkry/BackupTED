@@ -21,7 +21,6 @@ def SartSyncFolders():
                 
                 for x in main_flist:
                     if not ft.IsFileExists(os.path.join(folder, x)):
-                        print(os.path.join(folder, x))
                         ft.CopyFile(os.path.join(current_folder, x), folder)
 
                     
