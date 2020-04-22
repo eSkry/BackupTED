@@ -17,9 +17,10 @@ def GetUnixTimestamp():
 
 
 # Принимает на вход словарь лейблов и папок для синхронизации.
-# возсращает список доступных папок из переданного массива
+# возвращает список доступных папок из переданного массива
 def GetAvaibleSyncSourceFolders(config_sources):
     avaible_folders = {}
+
     for lable in config_sources.keys():
         if ft.IsFolderAvailable( config_sources[lable] ):
             avaible_folders[lable] = config_sources[lable]
@@ -70,6 +71,7 @@ def GetTempSaveFolder():
 def GetSourcePairs():
     sources = str(conf['Backup']['source']).replace("'", '').split(';')
     pairs = {}
+
     for val in sources:
         temp = val.split('@')
         pairs[temp[0]] = temp[1]

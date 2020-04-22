@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timezone
 import configparser
+import shutil
 import sqlite3
 import zipfile
 import os
@@ -28,14 +29,13 @@ def CreateBackups():
 
     for key in backup_sources.keys():
         copy_source = backup_sources[key]
-
+        
         if bct.NeedBackup( db.GetLastBackupTime(conn, copy_source) ):
-            print('Start backup: [{}]'.format(copy_source))
+            print(f'Start backup: [{copy_source}]')
             timestamp = bct.GetUnixTimestamp()
             file_time = str(datetime.utcfromtimestamp(timestamp).strftime('%d_%m_%Y_%H_%M_%S'))
-            zip_filename = '{}_{}.zip'.format(key, file_time)
+            zip_filename = f'{key}_{file_time}.zip'
             zip_temp_path = os.path.join(temp_zip_dir, zip_filename)
-
             bct.zipdir(copy_source, zip_temp_path, b'12345')
             db.InsertNewBackupInfo(conn, timestamp, copy_source, zip_filename)
             zip_files.append(zip_temp_path)
