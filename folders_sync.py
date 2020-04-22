@@ -36,7 +36,6 @@ def ClearOldBackups():
         for b_ted in bted_list:
             fpath = os.path.join(folder, b_ted)
             create_date = datetime.datetime.fromtimestamp(os.path.getctime(fpath))
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(fpath))
             
-            if (current_date - create_date).days >= clean_days or (current_date - modified_date).days >= clean_days:
+            if (current_date - create_date).days >= clean_days:
                 os.remove(fpath)
