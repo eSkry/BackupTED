@@ -11,6 +11,7 @@ conf = configparser.ConfigParser()
 conf.read("./config/config.conf")
 
 ignore_types = str(conf['ignore']['types']).split(';')
+ignore_size_file = int(conf['ignore']['size']) * 1024 * 1024
 
 # Возвращает unix timestamp -> float
 def GetUnixTimestamp():
@@ -42,8 +43,13 @@ def zipdir(path, zip_name, password):
         for file in files:
             if IsFileIgnore(file):
                 continue
+            
+            filePath = os.path.join(root, file)
 
-            ziph.write(os.path.join(root, file))
+            if os.path.getsize(filePath) >= ignore_size_file:
+                continue
+
+            ziph.write(filePath)
     
     ziph.setpassword(password)
 
@@ -67,7 +73,7 @@ def BackupToLocalExists():
 
 def GetTempSaveFolder():
     if BackupToLocalExists():
-        return str(conf['local']['path']).replace("'", '')
+        return str(conf['local']['path']).replace("'", '').split(';')[0]
 
     return str(conf['Backup']['temp_dir']).replace("'", '')
 
@@ -88,9 +94,12 @@ def GetLocalDestinationFolders():
 def GetIgnoreFileTypes():
     return str(conf['ignore']['types']).split(';')
 
-def IsFileIgnore(filePath):
+def IsFileIgnore(fileName):
     for fileType in ignore_types:
-        if filePath.endswith(fileType):
+        if fileName.endswith(fileType):
             return True
     
+    if fileName.startswith('~'):
+        return True
+
     return False

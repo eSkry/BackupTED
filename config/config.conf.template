@@ -24,3 +24,4 @@ name=db.db
 
 [ignore]
 types='exe;bin;jpg;png;'
+size=10
