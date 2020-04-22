@@ -10,6 +10,7 @@ import folder_tools as ft
 conf = configparser.ConfigParser()
 conf.read("./config/config.conf")
 
+ignore_types = str(conf['ignore']['types']).split(';')
 
 # Возвращает unix timestamp -> float
 def GetUnixTimestamp():
@@ -36,9 +37,12 @@ def MakeDestinationFolders(config_destination):
 
 
 def zipdir(path, zip_name, password):
-    ziph = zipfile.ZipFile(zip_name, 'w')
+    ziph = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
     for root, dirs, files in os.walk(path):
         for file in files:
+            if IsFileIgnore(file):
+                continue
+
             ziph.write(os.path.join(root, file))
     
     ziph.setpassword(password)
@@ -77,3 +81,16 @@ def GetSourcePairs():
         pairs[temp[0]] = temp[1]
 
     return pairs
+
+def GetLocalDestinationFolders():
+    return str(conf['local']['path']).split(';')
+
+def GetIgnoreFileTypes():
+    return str(conf['ignore']['types']).split(';')
+
+def IsFileIgnore(filePath):
+    for fileType in ignore_types:
+        if filePath.endswith(fileType):
+            return True
+    
+    return False

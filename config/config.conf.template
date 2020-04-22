@@ -21,3 +21,6 @@ older=7d
 
 [Database]
 name=db.db
+
+[ignore]
+types='exe;bin;jpg;png;'

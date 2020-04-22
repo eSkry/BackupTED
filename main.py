@@ -1,7 +1,6 @@
 from datetime import datetime
 from datetime import timezone
 import configparser
-import shutil
 import sqlite3
 import zipfile
 import os
@@ -44,9 +43,13 @@ def CreateBackups():
         if dest == 'local':
             if bct.BackupToLocalExists():
                 continue
-
-            dest_path = os.path.join(temp_zip_dir, str(conf['local']['path']).replace("'", ''))
-            ft.CopyFiles(zip_files, dest_path)
+            
+            dest_folders = bct.GetLocalDestinationFolders()
+            for dest_f in dest_folders:
+                ft.CopyFiles(zip_files, dest_f)
+                
+            #dest_path = os.path.join(temp_zip_dir, str(conf['local']['path']).replace("'", ''))
+            #ft.CopyFiles(zip_files, dest_path)
         if dest == 'GDrive':
             pass
 
