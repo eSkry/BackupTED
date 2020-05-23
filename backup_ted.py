@@ -17,7 +17,7 @@ class BackupTED(object):
         self.temp_zip_dir = self.conf.GetTempDir()
         self.backup_sources = self._getAvaibleSyncSourceFolders()
         self.backup_dest = self.conf.GetDestinaionMarks()
-        self.ignore_size_file = self.conf.GetIgnoreFileSize()
+        self.ignore_size_file = int(self.conf.GetIgnoreFileSize()) * 1024 * 1024
         self.ignore_types = self.conf.GetIgnoreFileTypes()
 
         self.conn = db.CreateDB('initdb.sql')
@@ -42,6 +42,7 @@ class BackupTED(object):
         for dest in self.backup_dest:
             if dest == 'local':            
                 dest_folders = self.conf.GetLocalDestinationFolders()
+                dest_folders.remove(self.temp_zip_dir)
                 for dest_f in dest_folders:
                     ft.CopyFiles(zip_files, dest_f)
                     
@@ -57,8 +58,6 @@ class BackupTED(object):
             if item.endswith('.bted'):
                 os.remove(os.path.join(self.temp_zip_dir, item))
 
-    # Принимает на вход словарь лейблов и папок для синхронизации.
-    # возвращает список доступных папок из переданного массива
     def _getAvaibleSyncSourceFolders(self):
         config_sources = self.conf.GetBackupSources()
         avaible_folders = {}

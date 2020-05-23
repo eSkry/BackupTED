@@ -10,7 +10,7 @@ class TEDConfigReader(object):
         self.conf.read(file)
 
     def GetIgnoreFileTypes(self):
-        return self._safeGetParameter('ignore', 'types', '')
+        return self._safeGetParameter('ignore', 'types', '').replace('\'', '').split(';')
     
     def GetIgnoreFileSize(self):
         return self._safeGetParameter('ignore', 'size', 0)
@@ -48,13 +48,13 @@ class TEDConfigReader(object):
         return 7
 
     def GetDestinaionMarks(self):
-        return self._safeGetParameter('Backup', 'dest', 'local')
+        return self._safeGetParameter('Backup', 'dest', 'local').replace('\'', '').split(';')
 
     def GetZipPassword(self):
         return self._safeGetParameter('Backup', 'zip_pass', None)
 
     def GetTempDir(self):
-        return self._safeGetParameter('Backup', 'temp_dir', './')
+        return self._safeGetParameter('Backup', 'temp_dir', './').replace('\'', '').replace('"', '')
 
     def GetLocalDestinationFolders(self):
         return str(self._safeGetParameter('local', 'path', '')).replace("'", '').split(';')
