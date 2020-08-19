@@ -42,7 +42,8 @@ class BackupTED(object):
         for dest in self.backup_dest:
             if dest == 'local':            
                 dest_folders = self.conf.GetLocalDestinationFolders()
-                dest_folders.remove(self.temp_zip_dir)
+                if self.temp_zip_dir in dest_folders:
+                    dest_folders.remove(self.temp_zip_dir)
                 for dest_f in dest_folders:
                     ft.CopyFiles(zip_files, dest_f)
                     
